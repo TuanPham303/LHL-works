@@ -1,5 +1,4 @@
 var numDice = Number(process.argv[2]);
-
 function rollDice(num) {
   var diceRolls = '';
   for (var i = 0; i < num; i++) {
