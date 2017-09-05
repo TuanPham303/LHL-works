@@ -10,8 +10,8 @@ for (var i = 0; i < pass.length; i++){
     }
   }
 }
-console.log(pass);
-*/
+console.log(pass);*/
+
 
 // -------using object
  
