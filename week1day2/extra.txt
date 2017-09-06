@@ -1,0 +1,14 @@
+1. Program to print all the prime numbers from 1 to 500
+2. Program to generate a fibonnaci series - 0 1 1 2 3 5 8 13
+3. Program to generate  palindromes - iii
+4. Program to say amount in words - like Seventeen only, Seven Hundred only
+5. Program 
+    *
+  *   *
+*   *   *
+
+6. A flip of 5th Question.
+
+*   *   *
+  *   *
+    *

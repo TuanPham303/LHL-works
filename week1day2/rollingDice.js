@@ -7,3 +7,6 @@ function rollDice(num) {
   return diceRolls.slice(0,-2);
 }
 console.log('Rolled ' + numDice + ' dice: ' + rollDice(numDice));
+
+
+
