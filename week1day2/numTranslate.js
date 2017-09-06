@@ -1,5 +1,5 @@
 // 4. Program to say amount in words - like Seventeen only, Seven Hundred only
-
+// try to put everything in 1 object and have 1 function to do all the jobs
 var num = {
   "0": "zero",
   "1": "one",
