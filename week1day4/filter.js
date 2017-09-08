@@ -26,6 +26,8 @@ Array.prototype.myFilter = function(callback) {
 
 //------------------------------------------------------
 
+//The below tests only work for the refactored version
+
 // ------------------TEST 1-------------------
 
 /*var words = ["spray", "limit", "elite", "exuberant", "destruction", "present"];
