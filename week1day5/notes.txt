@@ -1,0 +1,12 @@
+- research:
+  - {} notation that can be used to put var in
+  - npm install globally
+  
+
+
+- require() function
+  - need to put module.exports = 'something' inside the js file so the require() will return that something
+  - how to use require():
+    - in the export file: include module.exports('path')
+    - in the import file: var name = require('path')
+
