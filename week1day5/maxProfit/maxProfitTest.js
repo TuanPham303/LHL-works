@@ -7,4 +7,9 @@ describe("Find max profit stock", function () {
     var result = maxProfit(array);
     assert.isTrue(result === 16);
   });
+  it("should return -1 if the array is [45, 24]", function(){
+    var array = [45, 24];
+    var result = maxProfit(array);
+    assert.isTrue(result === -1);
+  });
 });

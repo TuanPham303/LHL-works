@@ -1,4 +1,5 @@
 Array.prototype.myReduce = function (callback, initialValue) {
+  callback(acc, curValue, curIndex, this);
   if (initialValue) {
     acc = initialValue;
     curIndex = 1;
@@ -15,11 +16,11 @@ Array.prototype.myReduce = function (callback, initialValue) {
 
 
 // ---------------TEST 1-----------------------
-/*var numbers = [0, 1, 2, 3];
-var result = numbers.reduce(function(accumulator, currentValue) {
+var numbers = [0, 1, 2, 3];
+var result = numbers.myReduce(function(accumulator, currentValue) {
     return accumulator + currentValue;
 });
-console.log(result);*/
+console.log(result);
 
 // --------------------TEST 2----------------------
 /*console.log([0, 1, 2, 3, 4].reduce(

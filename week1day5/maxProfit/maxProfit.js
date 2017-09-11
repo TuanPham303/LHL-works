@@ -5,6 +5,7 @@ function maxProfit (arr) {
       max = arr[c] - arr[i] > max ? arr[c] - arr[i] : max;
     }
   }
+  max = max === 0 ? -1 : max;
   return max;
 }
 

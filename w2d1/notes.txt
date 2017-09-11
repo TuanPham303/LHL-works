@@ -1,0 +1,9 @@
+- HTTP
+  - need to require http first before using it: const http = require('http'). If it is https, use https
+
+
+
+
+- ES6
+  - const is used when the var is not gonna be changed in the future
+  - let is used when the var is gonna be changed in the future
