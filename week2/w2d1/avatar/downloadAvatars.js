@@ -1,11 +1,13 @@
+require('dotenv').config();
 var request = require('request');
 var fs = require('fs');
-var GITHUB_USER = "TuanPham303";
-var GITHUB_TOKEN = "fadf6a99cb8d9623f693151e804124612926e93a";
+
+// var GITHUB_USER = "TuanPham303";
+// var GITHUB_TOKEN = "fadf6a99cb8d9623f693151e804124612926e93a";
 
 function getRepoContributors(repoOwner, repoName, cb){
   var options = {
-    url: 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors',
+    url: 'https://'+ process.env.GITHUB_USER + ':' + process.env.GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors',
     headers: {
       'User-Agent': '@TuanPham303'
     }
@@ -37,25 +39,3 @@ getRepoContributors("jquery", "jquery", function(err, result) {
 
   
 
-
-
-
-
-
-
-
-/*var options = {
-  url: 'http://api.github.com/users/davidvandusen/repos',
-  header: {
-    'User-Agent': 'macaroon'
-  }
-};
-
-
-request(options, function(error, response, body){
-  if(error){
-    console.log(error);
-    return;
-  }
-  console.log(body);
-});*/
