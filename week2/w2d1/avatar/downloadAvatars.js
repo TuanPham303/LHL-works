@@ -33,7 +33,7 @@ getRepoContributors("jquery", "jquery", function(err, result) {
     name.push(`./avatars/${ele.login}.jpg`);
     avatarUrl.push(ele.avatar_url);
   });
-
+  console.log(JSON.parse(result));
   downloadImageByURL(avatarUrl, name);
 });
 
