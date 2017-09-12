@@ -1,4 +1,5 @@
 var request = require('request');
+var fs = require('fs');
 var GITHUB_USER = "TuanPham303";
 var GITHUB_TOKEN = "fadf6a99cb8d9623f693151e804124612926e93a";
 
@@ -14,12 +15,30 @@ function getRepoContributors(repoOwner, repoName, cb){
   });
 }
 
+function downloadImageByURL(url, filePath) {
+  for (var i = 0; i < url.length; i++) {
+    request.get(url[i]).pipe(fs.createWriteStream(filePath[i]));
+  }
+  console.log('downloaded');
+}
+
+
 getRepoContributors("jquery", "jquery", function(err, result) {
-  var profile = JSON.parse(result);
-  profile.forEach(function(ele){
-    console.log(ele.avatar_url);
-  }); 
+  var name = [];
+  var avatarUrl = [];
+
+  JSON.parse(result).forEach(function(ele){
+    name.push(`./avatars/${ele.login}.jpg`);
+    avatarUrl.push(ele.avatar_url);
+  });
+
+  downloadImageByURL(avatarUrl, name);
 });
+
+  
+
+
+
 
 
 
