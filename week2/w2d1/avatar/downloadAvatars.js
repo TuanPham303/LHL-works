@@ -1,22 +1,24 @@
-const request = require('request');
+var request = require('request');
 var GITHUB_USER = "TuanPham303";
 var GITHUB_TOKEN = "fadf6a99cb8d9623f693151e804124612926e93a";
 
 function getRepoContributors(repoOwner, repoName, cb){
-  var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
-  console.log(requestURL);
-  /*request.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contributors`)
-  .on('error', function(err){
-    throw err;
-  })
-  .on('response', function(response){
-    cb();
-  });*/
+  var options = {
+    url: 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors',
+    headers: {
+      'User-Agent': '@TuanPham303'
+    }
+  };
+  request(options, function(error, response, body){
+    cb(error, body);
+  });
 }
 
-getRepoContributors('jquery', 'jquery', function(err, result){
-  console.log("error: ", err);
-  console.log("result: ", result);
+getRepoContributors("jquery", "jquery", function(err, result) {
+  var profile = JSON.parse(result);
+  profile.forEach(function(ele){
+    console.log(ele.avatar_url);
+  }); 
 });
 
 
