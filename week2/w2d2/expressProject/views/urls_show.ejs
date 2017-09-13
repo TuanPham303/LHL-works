@@ -1,0 +1,17 @@
+<head>
+  <% include partials/_header.ejs %>
+</head>
+<body>
+  <table>
+    <tr>
+      <th>URL</th>
+      <th>Short form</th>
+    </tr>
+    <% for(let key in urls){ %>
+      <tr>
+        <td><%=urls[key]%></td>
+        <td><%=key%></td>
+      </tr>
+    <%}%>
+  </table>
+</body>

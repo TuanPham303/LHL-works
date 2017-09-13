@@ -1,0 +1,29 @@
+- what is a server?
+  - a port allows us to run multiple server on a single host (choose between 1024 - 65535)
+
+- Expess.js
+  - define a middle ware -> app.use(express.static('public')) - to handle all the static requests so we dont have to do get request for every request
+    ? why is public being used
+    * try to understand this one, this is important
+    - middle ware example:
+      ///
+      app.use((request, response next) => {
+        response.local.agent
+      })
+
+- EJS
+  - express uses 'views' as the name of the folder to store all the .ejs files
+  - <%= %> to put js into the middle of html in ejs
+    - if we dont want to write anything to the html, we dont use the '=' after %, if we want that js to be displayed on the html file, use the '='
+
+- ES6
+  - 'use strict' 
+    - put at the beginning of the file to set the whole file into strict mode
+    - put at the beginning of each function to set that function to strict mode only - good for debugging
+  - be careful when use this in => function, should not use
+  - const obj = {
+    first: 1,
+    second: 2,
+    third: 3
+    } 
+    const {first, second} = obj // will find the keys in obj and assign the value to the new const 
