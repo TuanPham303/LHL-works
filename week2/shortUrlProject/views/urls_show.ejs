@@ -1,0 +1,16 @@
+<head>
+  <% include partials/_header.ejs %>
+</head>
+<body>
+  <% for(let url in urls) { %>
+    <p><%= url %> -> <%= urls[url] %></p>
+    <form action="/urls/<%= url %>/delete" method="POST">
+      <button type='submit'>delete</button>
+    </form>
+    <form action="/urls/<%= url %>/update" method="POST">
+      <label for="longURL">Enter a new URL:</label>
+      <input id="longURL" type="text" name="longURL" value="http://" style="width: 300px">
+      <input type="submit" value="Update">
+    </form>
+  <% } %>
+</body>
