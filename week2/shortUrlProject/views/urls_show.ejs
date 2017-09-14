@@ -1,7 +1,6 @@
 <body>
-  <% include partials/_header.ejs %>
   <% for(let url in urls) { %>
-    <p><%= url %> -> <%= urls[url] %></p>
+    <p><a href="<%= urls[url] %>"><%= url %></a> -> <%= urls[url] %></p>
     <form action="/urls/<%= url %>/delete" method="POST">
       <button type='submit'>delete</button>
     </form>

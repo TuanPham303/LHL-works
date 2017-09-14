@@ -12,22 +12,89 @@ app.use(cookieParser());
 
 app.set('view engine', 'ejs');
 
-var urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
+const urlDatabase = {};
 
-//home page
-app.get('/', (request, response) => {
-  let templateVars = {
+//add all the variables to local by using middleware
+app.use(function (req, res, next) {
+  res.locals = {
+    err: err,
+    users: users,
     urls: urlDatabase,
-    username: request.cookies.username
+    usedEmail: usedEmail,
+    user_id: req.cookies.user_id
   };
-  response.render('urls_index', templateVars);
+  next();
+});
+
+/////////////REGISTER//////////////
+const users = {};
+let err = '';
+let usedEmail;
+app.get('/register', (req, res) => {
+  res.render('register');
+});
+app.post('/register', (req, res) => {
+  //error handling
+  if (req.body.email === '' || req.body.password === '') {
+    err = true;
+    res.redirect('/register');
+  } else {
+    let userId = generateRandomId();
+    users[userId] = {};
+    users[userId].id = userId;
+    users[userId].email = req.body.email;
+    users[userId].password = req.body.password;
+    res.redirect('/');
+  }
+});
+
+function generateRandomId() {
+  let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+  let randomString = '';
+  for (let i = 0; i < 9; i++){
+    let ranNumber = Math.floor(Math.random() * chars.length);
+    randomString += chars.charAt(ranNumber);
+  }
+  return randomString;
+}
+
+///////////LOGIN/////////////////
+app.get('/login', (req, res) => {
+  res.render('login');
+})
+app.post('/login', (req, res) => {
+  let foundUser 
+  for(let user in users){
+    if(req.body.email === users[user].email && req.body.password === users[user].password){
+        foundUser = true;
+        break;
+    } else {
+      foundUser = false;
+    }
+  }
+  if(!foundUser){
+    res.render('login', {err: 'not found'})
+  } else {
+    res.cookie('user_id', req.body.email);
+
+    res.redirect('/');
+  }
+})
+
+////////////LOG OUT///////////////
+app.post('/logout', (request, response) => {
+  response.clearCookie('user_id');
+
+  response.redirect('/');
+});
+
+/////////////HOME PAGE/////////////
+app.get('/', (request, response) => {
+  response.render('urls_index');
 });
 
 //get user's input and update the urlDatabase
-app.post("/", (request, response) => {
+app.post("/url", (request, response) => {
   let templateVars = {
     urls: urlDatabase,
     username: request.cookies.username
@@ -67,6 +134,12 @@ app.post('/urls/:id/update', (request, response) => {
   response.redirect('/');
 });
 
+//redirecting
+app.get('/:id', (req, res) => {
+  let id = req.params.id;
+  res.render('<% urls[id] %>');
+})
+
 function generateRandomString() {
   let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
   let randomString = '';
@@ -77,53 +150,8 @@ function generateRandomString() {
   return randomString;
 }
 
-//login
-/*app.get('/login', (request, response) => {
-  response.render('urls_index');
-})*/
-app.post('/login', (request, response) => {
-  response.cookie('username', request.body.username);
-  response.redirect('/');
-});
-
-//logout
-/*app.get('/logout', (request, response) => {
-  response.render('urls_index');
-});*/
-app.post('/logout', (request, response) => {
-  response.clearCookie('username');
-
-  response.redirect('/');
-});
-
 //start the server
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
-/*//show the list of url and shortcut
-app.get('/urls/show', (request, response) => {
-  let templateVars = {
-    urls: urlDatabase
-  };
-  response.render('urls_show', urlDatabase);
-});
-app.get('/urls/new', (request, response) => {
-  response.render('urls_new');
-});
-//display the urlDatabase
-app.get('/urls', (request, response) => {
-  let templateVars = {
-    urls: urlDatabase
-  };
-  response.render('urls_index', templateVars);
-});
-//redirecting short url to long url
-app.get('/:id', (request, response) => {
-  let longURL = urlDatabase[request.params.id];
-  response.redirect(longURL);
-});
-*/
-
-
-//asdfscgbsjkfcbhsnfgch
