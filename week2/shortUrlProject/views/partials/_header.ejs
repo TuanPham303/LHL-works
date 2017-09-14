@@ -1,1 +1,13 @@
 <title>Head</title>
+
+  <% if (username) { %>
+    <form action="/logout" method='POST'>
+      <input type="submit" value='Logout'>
+    </form>
+  <% } else { %>
+    <form action="/login" method="POST">
+      <input type="text" name='username'> 
+      <input type="submit" value='Login'>
+    </form>
+  <% } %>  
+  <div>the user is: <%= username %></div>

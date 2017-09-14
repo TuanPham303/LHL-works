@@ -1,7 +1,5 @@
-<head>
-  <% include partials/_header.ejs %>
-</head>
 <body>
+  <% include partials/_header.ejs %>
   <% for(let url in urls) { %>
     <p><%= url %> -> <%= urls[url] %></p>
     <form action="/urls/<%= url %>/delete" method="POST">

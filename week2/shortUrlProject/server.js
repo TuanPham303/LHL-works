@@ -6,6 +6,10 @@ var PORT = process.env.PORT || 8080; // default port 8080
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
+//cookie parser
+var cookieParser =  require('cookie-parser');
+app.use(cookieParser());
+
 app.set('view engine', 'ejs');
 
 var urlDatabase = {
@@ -15,15 +19,23 @@ var urlDatabase = {
 
 //home page
 app.get('/', (request, response) => {
-  response.render('urls_index', {urls: urlDatabase});
+  let templateVars = {
+    urls: urlDatabase,
+    username: request.cookies.username
+  };
+  response.render('urls_index', templateVars);
 });
 
 //get user's input and update the urlDatabase
 app.post("/", (request, response) => {
+  let templateVars = {
+    urls: urlDatabase,
+    username: request.cookies.username
+  };
   let shortURL = generateRandomString();
   urlDatabase[shortURL] = request.body.longURL;
 
-  response.render('urls_index', {urls: urlDatabase});
+  response.redirect('/');
 });
 
 //show url detail
@@ -31,8 +43,12 @@ app.get('/urls/:id', (request, response) => {
   let id = request.params.id;
   let url = {};
   url[id] = urlDatabase[id];
+  let templateVars = {
+    urls: url,
+    username: request.cookies.username
+  };
 
-  response.render('urls_show', {urls: url});
+  response.render('urls_show', templateVars);
 });
 
 //deleting url
@@ -60,6 +76,25 @@ function generateRandomString() {
   }
   return randomString;
 }
+
+//login
+/*app.get('/login', (request, response) => {
+  response.render('urls_index');
+})*/
+app.post('/login', (request, response) => {
+  response.cookie('username', request.body.username);
+  response.redirect('/');
+});
+
+//logout
+/*app.get('/logout', (request, response) => {
+  response.render('urls_index');
+});*/
+app.post('/logout', (request, response) => {
+  response.clearCookie('username');
+
+  response.redirect('/');
+});
 
 //start the server
 app.listen(PORT, () => {
@@ -89,3 +124,6 @@ app.get('/:id', (request, response) => {
   response.redirect(longURL);
 });
 */
+
+
+//asdfscgbsjkfcbhsnfgch
