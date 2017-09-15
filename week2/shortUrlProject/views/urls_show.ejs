@@ -1,6 +1,6 @@
 <body>
   <% for(let url in urls) { %>
-    <p><a href="<%= urls[url] %>"><%= url %></a> -> <%= urls[url] %></p>
+    <p><a href="<%= urls[url].longURL %>"><%= url %></a> -> <%= urls[url].longURL %></p>
     <form action="/urls/<%= url %>/delete" method="POST">
       <button type='submit'>delete</button>
     </form>
@@ -9,5 +9,6 @@
       <input id="longURL" type="text" name="longURL" value="http://" style="width: 300px">
       <input type="submit" value="Update">
     </form>
+    <a href="/">Return</a>
   <% } %>
 </body>

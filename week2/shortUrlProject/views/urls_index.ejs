@@ -9,25 +9,41 @@
     <form action="/logout" method='POST'>
       <input type="submit" value='Logout'>
     </form>
-  <% } else {%>
-    <a href="/login">Log in</a>
-    <% } %>
-  <a href="/register">Register</a>
-  <form action="/url" method="POST">
-    <label for="longURL">Enter a URL:</label>
-    <input id="longURL" type="text" name="longURL" value="http://" style="width: 300px">
-    <input type="submit" value="Submit">
-  </form>
-
-  <div>
+    <form action="/url" method="POST">
+      <label for="longURL">Enter a URL:</label>
+      <input id="longURL" type="text" name="longURL" value="http://" style="width: 300px">
+      <input type="submit" value="Create">
+    </form>
+    <div>
     <p>List of urls:</p>
     <ul>
-      <% for(let url in urls){ %>
-        <li><%= url %> -> <%= urls[url] %>
-          <a href='/urls/<%= url %>'>edit</a>
+      <% for(let url in urls){ 
+            if(urls[url].owner === user_id){
+      %>
+        <li><%= url %> -> <%= urls[url].longURL %> 
+          Created on: <%= urls[url].createdTime %> 
+          <% if(urls[url].updatedTime){ %> 
+            Updated on: <%= urls[url].updatedTime %>
+          <% } %>
+          <% if(user_id){ %>
+            <form action="/urls/<%= url %>" method='GET'>
+              <button type='submit'>Edit</button>
+            </form>
+          <% } %>
         </li>
-      <% } %>
+      <% }
+      } %>
     </ul>
   </div>
+  <% } else {%>
+    <a href="/login">Log in</a>
+    <a href="/register">Register</a>
+    <ul>All the URLs:
+      <% for(let url in urls){ %>
+        <li><%= url %> -> <%= urls[url].longURL %></li>   
+      <% } %>
+    </ul>
+  <% } %>
+
 </body>
 </html>
