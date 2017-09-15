@@ -1,49 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
 </head>
 <body>
+  <% include ./partials/_header.ejs %>
+  <h1>TINY APP</h1>
   <% if(user_id){ %>
-    <p>User: <%= user_id %></p>
-    <form action="/logout" method='POST'>
-      <input type="submit" value='Logout'>
-    </form>
-    <form action="/url" method="POST">
-      <label for="longURL">Enter a URL:</label>
-      <input id="longURL" type="text" name="longURL" value="http://" style="width: 300px">
-      <input type="submit" value="Create">
-    </form>
+    <a href="/urls/new">Create new short url</a>
     <div>
     <p>List of urls:</p>
     <ul>
-      <% for(let url in urls){ 
-            if(urls[url].owner === user_id){
-      %>
-        <li><%= url %> -> <%= urls[url].longURL %> 
-          Created on: <%= urls[url].createdTime %> 
-          <% if(urls[url].updatedTime){ %> 
-            Updated on: <%= urls[url].updatedTime %>
-          <% } %>
-          <% if(user_id){ %>
-            <form action="/urls/<%= url %>" method='GET'>
-              <button type='submit'>Edit</button>
-            </form>
-          <% } %>
-        </li>
-      <% }
-      } %>
-    </ul>
-  </div>
-  <% } else {%>
-    <a href="/login">Log in</a>
-    <a href="/register">Register</a>
-    <ul>All the URLs:
       <% for(let url in urls){ %>
-        <li><%= url %> -> <%= urls[url].longURL %></li>   
+        <% if(urls[url].owner === user_id){ %>
+          <li>
+            <a href="<%= urls[url].longURL %>"><%= `http://localhost:8080/${url}` %></a> -> <%= urls[url].longURL %> 
+              <form action="/urls/<%= url %>" method='GET'>
+                <button type='submit'>Edit</button>
+              </form>
+            <p>Created on: <%= urls[url].createdTime %> </p>
+            <% if(urls[url].updatedTime){ %> 
+              <p>Updated on: <%= urls[url].updatedTime %></p>
+            <% } %>
+          </li>
+        <% } %>
       <% } %>
     </ul>
-  <% } %>
-
+  <% } else { %>
+    <p>List of all the urls:</p>
+    <ul>
+      <% for(let url in urls){ %>
+        <li>
+          <a href="<%= urls[url].longURL %>"><%= `http://localhost:8080/${url}` %></a> -> <%= urls[url].longURL %> 
+          <p>Created on: <%= urls[url].createdTime %> </p>
+          <% if(urls[url].updatedTime){ %> 
+            <p>Updated on: <%= urls[url].updatedTime %></p>
+          <% } %>
+        </li>
+      <% } %>
+    </ul>
+  <% } %>  
+  </div>
 </body>
 </html>

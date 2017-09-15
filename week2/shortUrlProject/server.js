@@ -11,10 +11,6 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
-//cookie parser
-// var cookieParser =  require('cookie-parser');
-// app.use(cookieParser());
-
 //cookie session
 const cookieSession = require('cookie-session');
 app.use(cookieSession({
@@ -24,12 +20,7 @@ app.use(cookieSession({
 
 app.set('view engine', 'ejs');
 
-const urlDatabase = {
-  qwerty: {
-    id: 'qwerty',
-    longURL: 'http://youtube.com'
-  }
-};
+const urlDatabase = {};
 let err = '';
 let usedEmail;
 const users = {};
@@ -55,26 +46,18 @@ app.post('/register', (req, res) => {
     err = true;
     res.redirect('/register');
   } else {
-    let userId = generateRandomId();
+    let userId = generateRandomString(9);
     let hashedPassword;
     users[userId] = {};
     users[userId].id = userId;
     users[userId].email = req.body.email;
     hashedPassword = bcrypt.hashSync(req.body.password, 10);
     users[userId].password = hashedPassword;
-    res.redirect('/');
+    req.session.user_id = req.body.email;
+
+    res.redirect('/urls');
   }
 });
-
-function generateRandomId() {
-  let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
-  let randomString = '';
-  for (let i = 0; i < 9; i++){
-    let ranNumber = Math.floor(Math.random() * chars.length);
-    randomString += chars.charAt(ranNumber);
-  }
-  return randomString;
-}
 
 ///////////LOGIN/////////////////
 app.get('/login', (req, res) => {
@@ -86,7 +69,7 @@ app.post('/login', (req, res) => {
       userId = users[user].id;
     }
   }
-  let foundUser ;
+  let foundUser;
   for(let user in users){
     if(req.body.email === users[user].email && bcrypt.compareSync(req.body.password, users[user].password)){
         foundUser = true;
@@ -96,14 +79,14 @@ app.post('/login', (req, res) => {
     }
   }
   if(!foundUser){
-    res.render('login', {err: 'not found'});
+    res.render('login', {err: 'Not found, please enter correct email and password or register.'});
   } else {
     req.session.user_id = req.body.email;
 
-    res.redirect(`/u/${userId}`);
+    res.redirect('/urls');
   }
 });
-app.get('/u/:id', (req, res) => {
+app.get('/urls', (req, res) => {
   let id = req.params.id;
   res.render('urls_index');
 });
@@ -121,8 +104,8 @@ app.get('/', (request, response) => {
 });
 
 //get user's input and update the urlDatabase
-app.post("/url", (request, response) => {
-  let shortURL = generateRandomString();
+app.post("/urls/new", (request, response) => {
+  let shortURL = generateRandomString(6);
   let d = new Date();
   let year = d.getFullYear();
   let month = d.getMonth();
@@ -135,25 +118,15 @@ app.post("/url", (request, response) => {
   urlDatabase[shortURL].longURL = request.body.longURL;
   urlDatabase[shortURL].owner = request.session.user_id;
   urlDatabase[shortURL].createdTime = createdTime;
-  console.log(urlDatabase);
 
   response.redirect('/urls');
 });
-app.get('/urls', (req, res) => {
-  res.render('urls_index');
-});
-
-//show url detail
-app.get('/urls/:id', (request, response) => {
-  let id = request.params.id;
-  let url = {};
-  url[id] = urlDatabase[id];
-  let templateVars = {
-    urls: url,
-    username: request.session.username
-  };
-
-  response.render('urls_show', templateVars);
+app.get('/urls/new', (req, res) => {
+  if(req.session.user_id === undefined){
+    res.redirect('/login');
+  } else {
+    res.render('urls_new');
+  }
 });
 
 //deleting url
@@ -166,8 +139,8 @@ app.post('/urls/:id/delete', (request, response) => {
 
 //update url
 app.get('/urls/:id', (req, res) => {
-
-  res.render('urls_show');
+  let id = req.params.id;
+  res.render('urls_show', {url: id});
 });
 app.post('/urls/:id/update', (request, response) => {
   let id = request.params.id;
@@ -186,20 +159,15 @@ app.post('/urls/:id/update', (request, response) => {
 });
 
 //redirecting
-/*app.post('/:id', (req, res) => {
+app.get('/u/:id', (req, res) => {
   let id = req.params.id;
-  res.redirect(`/${id}`);
-});*/
-app.get('/r/:id', (req, res) => {
-  let id = req.params.id;
-  console.log(urlDatabase[id].longURL);
   res.redirect(`${urlDatabase[id].longURL}`);
 });
 
-function generateRandomString() {
+function generateRandomString(length) {
   let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
   let randomString = '';
-  for (let i = 0; i < 6; i++){
+  for (let i = 0; i < length; i++){
     let ranNumber = Math.floor(Math.random() * chars.length);
     randomString += chars.charAt(ranNumber);
   }
