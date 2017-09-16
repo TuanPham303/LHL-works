@@ -115,7 +115,12 @@ app.post("/urls/new", (request, response) => {
   let second = d.getSeconds();
   let createdTime = `${hour}:${minute}:${second} ${year}-${month + 1}-${date}`;
   urlDatabase[shortURL] = {};
-  urlDatabase[shortURL].longURL = request.body.longURL;
+  let userURL;
+  if(request.body.longURL.indexOf('http://') === -1){
+    userURL = request.body.longURL;
+    userURL = 'http://' + userURL;
+  }
+  urlDatabase[shortURL].longURL = userURL;
   urlDatabase[shortURL].owner = request.session.user_id;
   urlDatabase[shortURL].createdTime = createdTime;
 
