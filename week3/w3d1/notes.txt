@@ -1,0 +1,3 @@
+- CSS
+  - butterrick practice typography - everything you need to know about typography
+  - specification level: id > class > element
