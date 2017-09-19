@@ -1,0 +1,3 @@
+- add async to script tag so the browser will load the DOm and script at the same time: <script src="" async></script>
+
+- Decorator pattern (Addy Osmani)
