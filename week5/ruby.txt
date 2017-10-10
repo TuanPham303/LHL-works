@@ -1,0 +1,11 @@
+## something cool in js (look them up)
+  - short hand arrow function
+
+- terminal thing for ruby: install 'pry' for colors
+
+- look up:
+    attr_reader
+    :: - scope separation operator
+    over-ride
+    super
+    attr_accessor
