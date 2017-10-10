@@ -1,6 +1,5 @@
 class Players
   attr_reader :name, :score, :lives
-  # attr_writer 
 
   def initialize(name)
     @name = name
